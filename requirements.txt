@@ -1,5 +1,5 @@
 python>=3.12
 numpy
 pandas
-matplotlib
+matplotlib.pyplot
 astropy
