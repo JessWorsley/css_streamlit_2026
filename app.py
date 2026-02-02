@@ -221,12 +221,7 @@ with tab_pubs:
     keyword = st.text_input("🔎 Filter by keyword")
 
     if keyword:
-        publications = publications[
-            publications.apply(
-                lambda row: keyword.lower() in row.astype(str).str.lower().values,
-                axis=1
-            )
-        ]
+        publications = publications[publications['Keywords'].str.contains(keyword.lower())]
 
     publications['Title'] = publications.apply(
         lambda x: f'<a href="{x["Link"]}">{x["Title"]}</a>', axis=1
