@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 import numpy as np
 from streamlit_image_comparison import image_comparison
@@ -262,13 +263,17 @@ with tab_projects:
         
         st.markdown("### Radio Galaxies (GLEAM Database)")
         
-        image_comparison(
-            img1=random_img,
-            img2=trained_img,
-            label1="Random",
-            label2="Trained",
-            make_responsive=False,
-        )
+        # Generated on https://juxtapose.knightlab.com since the package wasn't working
+        # https://docs.streamlit.io/develop/api-reference/custom-components/st.components.v1.iframe
+        components.iframe(src="https://cdn.knightlab.com/libs/juxtapose/latest/embed/index.html?uid=ebd15206-ffde-11f0-ba1b-0e6f42328d7d", width=512, height=512)
+
+        # image_comparison(
+        #     img1=random_img,
+        #     img2=trained_img,
+        #     label1="Random",
+        #     label2="Trained",
+        #     make_responsive=True,
+        # )
 
     # ---------- Dynamical Systems
     with proj_tabs[1]:
