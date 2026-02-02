@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from streamlit_image_comparison import image_comparison
-import cv2
+#import cv2
 from PIL import Image
 from scipy import optimize
 from scipy import integrate
