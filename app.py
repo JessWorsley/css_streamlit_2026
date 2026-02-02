@@ -262,10 +262,24 @@ with tab_projects:
         st.write("Can you spot the X-shaped galaxy?")
         
         st.markdown("### Radio Galaxies (GLEAM Database)")
-        
-        # Generated on https://juxtapose.knightlab.com since the package wasn't working
-        # https://docs.streamlit.io/develop/api-reference/custom-components/st.components.v1.iframe
-        components.iframe(src="https://cdn.knightlab.com/libs/juxtapose/latest/embed/index.html?uid=ebd15206-ffde-11f0-ba1b-0e6f42328d7d", width=512, height=512)
+
+        with st.container(width=600):
+            components.html("""
+            <link rel="stylesheet" href="https://unpkg.com/image-compare-viewer/dist/image-compare-viewer.min.css">
+            <div id="image-compare">
+                <img width="512" src="https://raw.githubusercontent.com/JessWorsley/css_streamlit_2026/refs/heads/main/astronomaly/random.png" />
+                <img width="512" src="https://raw.githubusercontent.com/JessWorsley/css_streamlit_2026/refs/heads/main/astronomaly/trained.png" />
+            </div>
+            <script src="https://unpkg.com/image-compare-viewer/dist/image-compare-viewer.min.js"></script>
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    const element = document.getElementById("image-compare");
+  
+                    const viewer = new ImageCompare(element).mount();
+                });
+                
+            </script>
+            """, height=600)
 
         # image_comparison(
         #     img1=random_img,
