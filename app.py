@@ -11,8 +11,9 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
 # -------------------------------------------------
-# GLOBAL STYLE (bigger fonts + cleaner look)
+# STYLE SETUP
 # -------------------------------------------------
+# Bigger font and more open style
 st.markdown("""
 <style>
 html, body, [class*="css"]  {
@@ -27,12 +28,15 @@ h1, h2, h3 {
 </style>
 """, unsafe_allow_html=True)
 
-
+# Colour map settings
 cmap = ListedColormap([
-    "#FF0000",  # invalid (light red)
-    "#0000FF"   # valid (light blue)
+    "#FF0000",  # unviable (light red)
+    "#0000FF"   # viable (light blue)
 ])
 
+# -------------------------------------------------
+
+# Density perturbations
 def dynamical_system_generic(tau, parameters):
     x, Omega, K, q = parameters
     dx_dtau = - x * (x - q) + 2 * (x + K + q) - 3 * Omega + 2
@@ -120,11 +124,12 @@ def make_phase_plot(plane, q=0.5, Omega=1, K=0,
             ax.plot(sol[:,0], sol[:,1], lw=2)
 
     return fig, ax
+                        
+# -------------------------------------------------
 
-# Resize the images
+# Resize the astronomaly images
 random_img = Image.open('astronomaly/random.png').resize((512,512))
 trained_img = Image.open('astronomaly/trained.png').resize((512,512))
-
 
 # -------------------------------------------------
 # PAGE CONFIG
@@ -136,17 +141,15 @@ st.set_page_config(
 )
 
 # -------------------------------------------------
-# TOP NAVIGATION TABS  (2A)
+# TABS
 # -------------------------------------------------
 tab_profile, tab_pubs, tab_projects, tab_contact = st.tabs(
     ["👤 Profile", "📚 Publications", "🚀 Projects", "✉️ Contact"]
 )
 
-# =================================================
-# 👤 PROFILE TAB
-# =================================================
+# PROFILE TAB
 with tab_profile:
-
+    # Make columns
     col1, col2 = st.columns([4, 1])
 
     with col1:
@@ -155,17 +158,16 @@ with tab_profile:
             "PhD Candidate in Cosmology  \n"
             "📍 University of Cape Town  |  ✉️ wrsjes002@myuct.ac.za"
         )
-    
+        # Cosmo group and UCT logos
         st.image("logos.png", width=400)
     
     with col2:
+        # Profile picture on the right
         st.image("profile.jpg", use_container_width=True)
-
 
     st.markdown("---")
 
-
-    # ---------- overview badges
+    # Overview
     with st.container(border=True):
         st.markdown("### 🔎 Overview")
 
@@ -176,31 +178,25 @@ with tab_profile:
 💻 **Tools:** Python • Mathematica • CLASS
 """)
 
-
     st.markdown("")
 
-
-    # ---------- metrics
+    # Metrics (would be cool if these updated automatically somehow)
     col1, col2, col3 = st.columns(3)
     col1.metric("Publications", 3)
     col2.metric("Talks", 8)
-    col3.metric("Years of Research", 6)
-
+    col3.metric("Years of Research", 5)
 
     st.markdown("")
 
-
-    # ---------- biography in expander
+    # Biography
     with st.expander("📖 Biography", expanded=True):
         st.write("""
         I am a motivated and dependable individual with strong communication, teamwork, and leadership skills. I hold an M.Sc. in Astrophysics with distinction from the University of Cape Town (UCT), and am pursuing a PhD under the supervision of Prof. Dunsby at UCT. My masters research focused on structure formation, perturbation theory, and modified gravity, and my research interests lie in investigating early-universe cosmology and the dark sector using machine learning methods. I have extensive leadership experience, including serving as Chair of UCT ParaSport and an executive member of the Student Sports Union in the transformation portfolio. Additionally, I have over five years of science communication experience, engaging the public through lecturing at the Iziko Planetarium and the Cape Town Science Centre.
         """)
-
-
+        
     st.markdown("")
 
-
-    # ---------- download CV button
+    # Download CV button
     with open("JWorsley_CV_Feb2026.pdf", "rb") as f:
         st.download_button(
             "📄 Download CV",
@@ -209,12 +205,8 @@ with tab_profile:
             use_container_width=False
         )
 
-
-# =================================================
-# 📚 PUBLICATIONS TAB
-# =================================================
+# PUBLICATIONS TAB
 with tab_pubs:
-
     st.header("📚 Publications")
 
     publications = pd.read_csv("publications.csv")
@@ -240,22 +232,13 @@ with tab_pubs:
     st.subheader("📈 Publication Trends")
     st.bar_chart(publications["Year"].value_counts().sort_index())
 
-
-# =================================================
-# 🚀 PROJECTS TAB
-# =================================================
+# PROJECTS TAB
 with tab_projects:
-
     st.header("🚀 Projects")
-
     proj_tabs = st.tabs(["Astronomaly", "Dynamical Systems"])
-
-
-    # ---------- Astronomaly
+    # Astronomaly
     with proj_tabs[0]:
-
         st.set_page_config("Astronomaly")
-
         st.header("Finding Weird Galaxies with Astronomaly")
         
         st.write("These images show the power of machine learning in identifying anomalous galaxies, by comparing random images from a dataset with those selected by a trained active learning program. For my honours project, I tested Astronomaly -- which had only been tested on optical galaxies up till then -- on radio galaxies. When exploring vast datasets like this, active learning is essential in identifying unique data points. Astronomaly, designed by [Michelle Lochner](https://github.com/MichelleLochner/astronomaly) and her group, utilises active learning to search for particular galaxies in the user's scope, whether that be anomalous shapes or image artifacts.")
@@ -281,7 +264,8 @@ with tab_projects:
             </script>
             """, height=600)
 
-        # image_comparison(
+    # DOESN'T WORK SOMETIMES    
+    # image_comparison(
         #     img1=random_img,
         #     img2=trained_img,
         #     label1="Random",
@@ -289,9 +273,8 @@ with tab_projects:
         #     make_responsive=True,
         # )
 
-    # ---------- Dynamical Systems
+    # Dynamical Systems
     with proj_tabs[1]:
-
         st.set_page_config("Dynamical Systems")
         st.header("Dynamical Systems in $f(R)$ Gravity")
 
@@ -316,7 +299,8 @@ with tab_projects:
         ''')
 
         st.write("Below are streamplots visualising different slices of the dynamical system. The viable regions are shown in blue; the unviable in red. The fixed points of the system are denoted by red dots.")
-        
+
+        # Select plane (dropdown)
         plane = st.selectbox("Plane", ["(x, Ω)", "(x, q)"])
 
         if plane == "(x, Ω)":
@@ -330,7 +314,7 @@ with tab_projects:
         density = 1.0
         show_constraint = st.toggle("Show viable region", True)
         
-        trajectories = None
+        trajectories = None # doesn't work atm
         
         fig, _ = make_phase_plot(
             plane,
@@ -341,18 +325,13 @@ with tab_projects:
             trajectories=trajectories,
             figsize=(5,4)
         )
-
-        col1, col2, col3 = st.columns([1, 2, 1]) # Adjust column ratios as needed
-        
+        # Make columns so figure can be in the middle
+        col1, col2, col3 = st.columns([1, 2, 1])        
         with col2:
             st.pyplot(fig, width='content')
 
-
-# =================================================
-# ✉️ CONTACT TAB
-# =================================================
+# CONTACT
 with tab_contact:
-
     st.header("✉️ Contact")
 
     st.markdown("""
